@@ -13,7 +13,9 @@ namespace TCP.Fragments
       PacketsList = new Dictionary<int, Packet>();
       Receiver = TCPManager.GetFragment<Receiver>();
 
-      PacketsList.Add((int)ClientRoutes.TestRoute, Receiver.HandleTestRoute);
+      PacketsList.Add((int)ClientRoutes.TryToGetAccess, Receiver.HandleGetAccess);
+      PacketsList.Add((int)ClientRoutes.Disconnect, Receiver.HandleDisconnect);
+      PacketsList.Add((int)ClientRoutes.PositionRoute, Receiver.HandlePosition);
     }
 
     public void HandleData(int socket, byte[] data)

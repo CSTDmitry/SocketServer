@@ -8,12 +8,30 @@ namespace TCP.Fragments
     {
     }
 
-    public void HandleTestRoute(int socket, ByteBuffer buffer)
+    public void HandleGetAccess(int port, ByteBuffer buffer)
     {
-      string clientId = buffer.ReadString();
-      string message = buffer.ReadString();
+      string id = buffer.ReadString();
 
-      Console.WriteLine($"Test route message from: {clientId} Message: {message}");
+      TCPManager.AddAllowedSocket(port, id);
+      buffer.ClearBuffer();
+    }
+
+    public void HandlePosition(int socket, ByteBuffer buffer)
+    {
+      string id = buffer.ReadString();
+      float x = buffer.ReadFloat();
+      float y = buffer.ReadFloat();
+      float z = buffer.ReadFloat();
+
+      Console.WriteLine($"Position: ID: {id} x: {x} y: {y} z: {z}");
+      buffer.ClearBuffer();
+    }
+
+    public void HandleDisconnect(int socket, ByteBuffer buffer)
+    {
+      string id = buffer.ReadString();
+
+      TCPManager.Disconnect(id);
       buffer.ClearBuffer();
     }
   }

@@ -23,13 +23,18 @@ namespace TCP.Fragments
     {
       try
       {
-        if (Stream.EndRead(result) > 0)
+        if (Stream.EndRead(result) == 0)
+        {
+          Console.WriteLine("Connection lost");
+          return;
+        }
+        else
         {
           TCPManager.GetFragment<ByteBuffer>().Write(ReceiveBuffer);
           TCPManager.GetFragment<Router>().HandleData(Id, ReceiveBuffer);
-        }  
-
-        Stream.BeginRead(ReceiveBuffer, 0, ClientSocket.ReceiveBufferSize, ReceiveCallback, null);
+          
+          Stream.BeginRead(ReceiveBuffer, 0, ClientSocket.ReceiveBufferSize, ReceiveCallback, null);
+        }
       }
       catch (Exception ex)
       {
